@@ -1,5 +1,5 @@
 <template>
-  <button @click="callback" class='py-2 px-4 rounded-md text-white' :class='colorClass'>{{ text }}</button>
+  <button class='py-2 px-4 rounded-md text-white' :class='colorClass'>{{ text }}</button>
 </template>
 
 <script>
@@ -24,9 +24,7 @@ export default {
     color: {
       type: String,
       required: true
-    },
-    callback: Function,
-
+    }
   },
 }
 </script>
