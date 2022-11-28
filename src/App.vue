@@ -1,15 +1,23 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div>
+    <ButtonComp text="Заказать в Москву" color="blue"/>
+    <ButtonComp text="Заказать в Санкт-Петербург" color="green" />
+    <ModalWindow>
+      <RequestFeedback/>
+    </ModalWindow>
+  </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import ButtonComp from '@/components/UI/ButtonComp'
+import ModalWindow from '@/components/UI/ModalWindow'
+import RequestFeedback from '@/components/UI/RequestFeedback'
 
+RequestFeedback
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    ButtonComp, ModalWindow, RequestFeedback
   }
 }
 </script>
