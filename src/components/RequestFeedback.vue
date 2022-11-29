@@ -1,7 +1,6 @@
 <template>
   <form class="bg-white p-5 rounded-lg cursor-default form_grid" @click.stop>
     <span class="block text-2xl font-medium mb-9 grid_title sm:mb-0">Заказать звонок</span>
-
     <label
       class="block font-medium mb-5 grid_fio md:mb-4"
     >
@@ -16,8 +15,6 @@
         @input='$store.commit("setName", $event.target.value)'
       />
     </label>
-
-
     <label
       class="block font-medium mb-5 grid_phone md:mb-4"
     >
@@ -31,9 +28,7 @@
         :value='$store.getters?.getPhone'
         @input='$store.commit("setPhone", $event.target.value)'
       />
-
     </label>
-
     <label
       class="block font-medium mb-5 grid_email md:mb-4"
     >
@@ -48,7 +43,6 @@
         @input='$store.commit("setEmail", $event.target.value)'
       />
     </label>
-
     <label
       class="block font-medium mb-5 grid_city md:mb-4"
     >
@@ -67,7 +61,6 @@
           {{ city.name }}
         </option>
       </select>
-
     </label>
     <div class="grid_button sm:pt-6 md:pt-0">
       <ButtonComp
@@ -124,7 +117,6 @@
   }
 }
 
-
 @media (min-width: 850px) {
   .form_grid {
     grid-template-areas:
@@ -136,7 +128,6 @@
     grid-gap: 0px 20px;
   }
 }
-
 
 </style>
 
