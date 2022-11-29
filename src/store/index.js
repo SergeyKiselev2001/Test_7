@@ -1,6 +1,7 @@
 import { sendValues } from "@/api/api";
 import { cities } from "@/constants/cities";
 import { phoneMask } from "@/utils/phoneMask";
+import { validateForm } from "@/utils/validateForm";
 import { createStore } from "vuex";
 
 const store = createStore({
@@ -34,11 +35,14 @@ const store = createStore({
       state.form.city = city;
     },
     setPhone({ form }, newPhone) {
-      if (form.phone) {
-        form.phone = newPhone.replaceAll(/[^\d]/g, "").substring(1)
+      if (form.phone && newPhone.length > 18){
+          form.phone = newPhone.replaceAll(/[^\d]/g, "").substring(1, 10)
+      } else if (form.phone) {
+          form.phone = newPhone.replaceAll(/[^\d]/g, "").substring(1)
       } else {
         form.phone = newPhone
       }
+
     },
     closeModals(state) {
       state.showResponseModal = false
@@ -50,18 +54,24 @@ const store = createStore({
     async sendData(store) {
       const { state: { form: { name, phone, email, city }}} = store;
 
-      const body = {
-        name,
-        email,
-        phone: `+7${phone}`,
-        city_id: cities.find((el) => el.name == city).id,
-      };
+      const isFormCorrect = validateForm({ name, phone, email })
 
-      const response = await sendValues(body);
-      store.commit("setHtmlResponse", response);
-      store.commit("clearForm");
-      store.commit("closeModals");
-      store.commit("showResponseModal");
+      if (isFormCorrect === true){
+        const body = {
+          name,
+          email,
+          phone: `+7${phone}`,
+          city_id: cities.find((el) => el.name == city).id,
+        };
+
+        const response = await sendValues(body);
+        store.commit("setHtmlResponse", response);
+        store.commit("clearForm");
+        store.commit("closeModals");
+        store.commit("showResponseModal");
+      } else {
+        alert(isFormCorrect.error)
+      }
     },
   },
 });
