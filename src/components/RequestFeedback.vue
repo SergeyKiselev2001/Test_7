@@ -25,7 +25,7 @@
         class="block"
       >Телефон*</span>
       <input
-        type="text"
+        type="tel"
         placeholder="+7 (___) ___-__-__"
         class="font-normal w-full py-2 px-2.5 border border-gray-300 rounded-md leading-5 tracking-tighter"
         :value='$store.getters?.getPhone'
