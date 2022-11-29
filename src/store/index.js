@@ -1,26 +1,69 @@
+import { sendValues } from "@/api/api";
+import { cities } from "@/constants/cities";
+import { phoneMask } from "@/utils/phoneMask";
 import { createStore } from "vuex";
 
-
-const store =  createStore({
-    state: {
-        showModal: false,
-        city: 'Москва'
-    },
-
-    getters: {
-
-    },
-
-    mutations: {
-        setShowModal(state, { showModal, city = state.city}){
-           state.showModal = showModal
-           state.city = city 
-        }
-    },
-
-    actions: {
-
+const store = createStore({
+  state: {
+    showFormModal: false,
+    showResponseModal: false,
+    htmlResponse: "",
+    form: {
+      name: "",
+      phone: "",
+      email: "",
+      city: "",
     }
-})
+  },
 
-export { store }
+  getters: {
+    getPhone({ form }) {
+      return phoneMask(form.phone);
+    },
+  },
+
+  mutations: {
+    setName({ form }, newName) { form.name = newName },
+    setEmail({ form }, newEmail) { form.email = newEmail },
+    setCity({ form }, newCity){ form.city = cities.find(el => el.name == newCity).name },
+    showResponseModal(state) { state.showResponseModal = true },
+    setHtmlResponse(state, html) { state.htmlResponse = html },
+    clearForm({ form }){ for (let key in form) form[key] = ''},
+    showFormModal(state, city) {
+      state.showFormModal = true;
+      state.form.city = city;
+    },
+    setPhone({ form }, newPhone) {
+      if (form.phone) {
+        form.phone = newPhone.replaceAll(/[^\d]/g, "").substring(1)
+      } else {
+        form.phone = newPhone
+      }
+    },
+    closeModals(state) {
+      state.showResponseModal = false
+      state.showFormModal = false
+    },
+  },
+
+  actions: {
+    async sendData(store) {
+      const { state: { form: { name, phone, email, city }}} = store;
+
+      const body = {
+        name,
+        email,
+        phone: `+7${phone}`,
+        city_id: cities.find((el) => el.name == city).id,
+      };
+
+      const response = await sendValues(body);
+      store.commit("setHtmlResponse", response);
+      store.commit("clearForm");
+      store.commit("closeModals");
+      store.commit("showResponseModal");
+    },
+  },
+});
+
+export { store };
